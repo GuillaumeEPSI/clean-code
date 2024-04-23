@@ -1,0 +1,17 @@
+CompteBancaire.java:
+ - Si `type` ne peut avoir que 2 valeurs, autant en faire un Enum
+ - Pourquoi avoir un constructeur permettant de créer des Livret A, la classe est là pour ça
+ - Pour le constructeur classique, autant ne pas demander à l'utilisateur le type et le remplir automatiquement avec `CC`
+ - Pour le constructeur, vérifier que le découvert est une valeur négative et le mettre à 0 dans le cas contraire (pour l'instant)
+ - Pour la méthode `debiterMontant`, autant juste vérifier le découvert vu que dans le constructeur d'un livret A, il est fixé à 0 et ne peut pas être modifier ensuite
+ - Pour la méthode `setDecouvert` vérifier que c'est une valeur négative et que c'estun CompteCourant (ne rien faire sinon)
+ - Pour la méthode `setTauxRemuneration` vérifier que c'est une valeur positive et que c'est un livretA (ne rien faire sinon)
+ - Pour la méthode `appliquerRemuAnnuelle` vérifier le type de compte n'est pas nécessaire car le taux de rémunération est à 0 pour un CompteCourant
+ - Retirer la méthode `setType`, on ne peut pas changer le type d'un compte (il faut créer un nouvel objet)
+
+
+
+LivretA.java:
+ - Pour le constructeur, vérifier que le taux de rémunération est une valeur positive et le mettre à 0 dans le cas contraire (pour l'instant)
+ - Pour le constructeur, retirer le paramètre `type`, et juste le fixer à `LA`
+

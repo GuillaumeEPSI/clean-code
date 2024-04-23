@@ -23,35 +23,36 @@ public class CompteBancaire {
     /**
      * Le type vaut soit CC=Compte courant, ou soit LA=Livret A
      */
-    private String type;
+    private TypeCompte type;
 
     /**
+     * Ce constructeur est celui appelé par les enfants
+     *
      * @param solde
      * @param decouvert
      * @param type
      */
-    public CompteBancaire(String type, double solde, double decouvert) {
-        super();
-        this.type = type;
-        this.solde = solde;
-        this.decouvert = decouvert;
-    }
-
-
-    /**
-     * Ce constructeur est utilisé pour créer un compte de type Livret A
-     *
-     * @param type             = LA
-     * @param solde            représente le solde du compte
-     * @param decouvert        représente le découvert autorisé
-     * @param tauxRemuneration représente le taux de rémunération du livret A
-     */
-    public CompteBancaire(String type, double solde, double decouvert, double tauxRemuneration) {
+    protected CompteBancaire(TypeCompte type, double solde, double decouvert, double tauxRemuneration) {
         super();
         this.type = type;
         this.solde = solde;
         this.decouvert = decouvert;
         this.tauxRemuneration = tauxRemuneration;
+    }
+
+
+    /**
+     * Ce constructeur est utilisé pour créer un compte de type Compte Courant
+     *
+     * @param solde            représente le solde du compte
+     * @param decouvert        représente le découvert autorisé
+     */
+    public CompteBancaire(double solde, double decouvert) {
+        super();
+        this.type = TypeCompte.CC;
+        this.solde = solde;
+        this.decouvert = Math.min(decouvert, 0.0);
+        this.tauxRemuneration = 0.0;
     }
 
     /**
@@ -69,21 +70,17 @@ public class CompteBancaire {
      * @param montant
      */
     public void debiterMontant(double montant) {
-        if (type.equals("CC")) {
-            if (this.solde - montant > decouvert) {
-                this.solde = solde - montant;
-            }
-        } else if (type.equals("LA")) {
-            if (this.solde - montant > 0) {
-                this.solde = solde - montant;
-            }
+        if (this.solde - montant > decouvert) {
+            this.solde = solde - montant;
+        } else {
+            System.out.println("Fonds insuffisants");
         }
+
+
     }
 
     public void appliquerRemuAnnuelle() {
-        if (type.equals("LA")) {
-            this.solde = solde + solde * tauxRemuneration / 100;
-        }
+        this.solde = solde + solde * tauxRemuneration / 100;
     }
 
     /**
@@ -119,7 +116,9 @@ public class CompteBancaire {
      * @param decouvert the decouvert to set
      */
     public void setDecouvert(double decouvert) {
-        this.decouvert = decouvert;
+        if (this.type == TypeCompte.CC) {
+            this.decouvert = Math.min(decouvert, 0.0);;
+        }
     }
 
     /**
@@ -137,7 +136,9 @@ public class CompteBancaire {
      * @param tauxRemuneration the tauxRemuneration to set
      */
     public void setTauxRemuneration(double tauxRemuneration) {
-        this.tauxRemuneration = tauxRemuneration;
+        if (this.type == TypeCompte.LA) {
+            this.tauxRemuneration = Math.max(tauxRemuneration, 0.0);
+        }
     }
 
     /**
@@ -145,16 +146,7 @@ public class CompteBancaire {
      *
      * @return the type
      */
-    public String getType() {
+    public TypeCompte getType() {
         return type;
-    }
-
-    /**
-     * Setter
-     *
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
     }
 }
