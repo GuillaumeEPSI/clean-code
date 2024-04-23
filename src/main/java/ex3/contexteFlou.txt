@@ -1,0 +1,3 @@
+Dans Zoo, on peut remplacer les 3 listes par une seule liste d'animal
+Animal est un objet ayant comme attribut, un nom, un type et un comportement.
+Les attributs type et comportements sont des Enums
