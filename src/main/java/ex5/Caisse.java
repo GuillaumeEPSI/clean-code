@@ -6,6 +6,8 @@ import java.util.List;
 public class Caisse {
 
     private String nom;
+
+    private int poidsMAx;
     private List<Item> items;
 
     /**
@@ -13,9 +15,10 @@ public class Caisse {
      *
      * @param nom
      */
-    public Caisse(String nom) {
+    public Caisse(String nom, int poidsMAx) {
         super();
         this.nom = nom;
+        this.poidsMAx = poidsMAx;
         this.items = new ArrayList<>();
     }
 
@@ -55,4 +58,45 @@ public class Caisse {
         this.items = items;
     }
 
+    /**
+     * Getter pour l'attribut poidsMax
+     *
+     * @return le poidsMAx
+     */
+    public int getPoidsMAx() {
+        return poidsMAx;
+    }
+
+    /**
+     *
+     * @param poidsMAx the poidsMAx to set
+     */
+    public void setPoidsMAx(int poidsMAx) {
+        this.poidsMAx = poidsMAx;
+    }
+
+    /**
+     * Indique si une caisse peut "accueillir un objet
+     * @param item l'item à tester
+     * @return true si sont poids est inférieur au poidsMax, false sinon
+     */
+    public boolean canHoldItem(Item item){
+        return item.getPoids() <= poidsMAx;
+    }
+
+    /**
+     * Ajoute un item si il rentre dans la caisse
+     * @param item l'item à rajouter
+     */
+    public boolean addItem(Item item){
+        if (canHoldItem(item)){
+            items.add(item);
+            return true;
+        }
+        return false;
+    }
+
+    public int getSize(){
+        return items.size();
+    }
 }

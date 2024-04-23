@@ -9,12 +9,19 @@ public class Inventaire {
 
     public Inventaire() {
         caisses = new ArrayList<>();
-        caisses.add(new Caisse("Petits objets"));
-        caisses.add(new Caisse("Moyens objets"));
-        caisses.add(new Caisse("Grands objets"));
+        caisses.add(new Caisse("Petits objets", 4));
+        caisses.add(new Caisse("Moyens objets", 20));
+        caisses.add(new Caisse("Grands objets", Integer.MAX_VALUE)); // valeur arbitraire
     }
 
     public void addItem(Item item) {
+
+
+        for (Caisse caisse : caisses){
+            if(caisse.addItem(item)){
+                break;
+            }
+        }
 
         //TODO Faites évoluer ce code (idée: c'est le caisse qui doit "savoir" si elle peut accepter un objet ou non)
         if (item.getPoids() < 5) {
@@ -29,8 +36,10 @@ public class Inventaire {
     }
 
     public int taille() {
-
-        //TODO faites évoluer ce code.
-        return caisses.get(0).getItems().size() + caisses.get(1).getItems().size() + caisses.get(2).getItems().size();
+        int tailleTotale = 0;
+        for (Caisse caisse : caisses){
+            tailleTotale += caisse.getSize();
+        }
+        return tailleTotale;
     }
 }
